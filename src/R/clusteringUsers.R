@@ -133,12 +133,37 @@ getUserCluster <-function(userId) {
   return(tmpCluster10[which(names(tmpCluster10)==userId)])
 }
 
-getArtistValOnClust <- function(artist,cluster) {
-  
+getArtistValOnClust <- function(artist,cluster,trainData) {
+  relevantUsers <- names(tmpClusts10)[which(tmpClusts10==cluster)]
+  subData <- trainData[which(trainData[,3]%in%relevantUsers),]
+  subData <- subData[which(subData[,1]==artist),]
+  return(mean(subData[,4],na.rm=TRUE))
 }
 
 #calc average ranking of artist per cluster on train data.
-calcAverageRanking <- function(trainData) {
+calcAverageRanking <- function(trainData,testData) {
   artists <- unique(trainData[,1])
-  
+  clusters <- 1:10
+  artistsVals <- matrix(ncol=length(artists),nrow=length(clusters))
+  for(a in 1:length(artists)) {
+    for(clust in 1:length(clusters)) {
+      artistsVals[clust,a] <- getArtistValOnClust(a,clust,trainData)
+    }
+  }
+  colnames(artistsVals) <- artists
+  rownames(artistsVals) <- clusters
+  #browser()
+  res <- apply(testData,1,function(x) {
+    #browser()
+    u <- x[3]
+    clust <- tmpClusts10[which(names(tmpClusts10)==u)]
+    artist <- x[1]
+    #browser()
+    return(artistsVals[which(clusters==clust),which(artists==artist)])
+  })
+  browser()
+  resWithZero <- lapply(res,function(x) {if(length(x)==0){return(0)}else {return(x[1])}})
+  resReduced <- Reduce(c,resWithZero)
+  result <- cbind(testData,resReduced)
+  return(result)
 }
