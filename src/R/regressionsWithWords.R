@@ -57,3 +57,6 @@ getSD <- function(artist) {
 
 artists <<- unique(train[,1])
 sds <<- sapply(artists,getSD)
+
+
+#merging test with words...
