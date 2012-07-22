@@ -3,6 +3,7 @@ source('load-data.R')
 super <- merge(train, users, by.x='User', by.y='RESPID', all.x=T)
 
 words <- as.data.frame(apply(words,2,as.factor))
+words$LIKE_ARTIST <- as.numeric(as.character(words$LIKE_ARTIST))
 super <- merge(super, words, by=c("Artist", "User"), all.x=T)
 
 super <- transform(super, 
@@ -15,4 +16,4 @@ super.fix <- na.roughfix(super)
 users.fix <- na.roughfix(users)
 
 require(party)
-super.tr <- ctree(Ratings ~ ., data=super.fix)
+#super.tr <- ctree(Rating ~ ., data=super.fix)
