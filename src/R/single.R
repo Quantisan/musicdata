@@ -22,4 +22,4 @@ testw.filled <- na.roughfix(test.words)
 
 mdl.lm <- lm(Rating ~ ., data=tw.fix)
 out <- predict(mdl.lm, testw.filled)
-write.csv(as.data.frame(out), file="rflm.csv", row.names=F)
+write.table(as.data.frame(out), file="../../data/rflm.csv", row.names=F, col.name=F, sep=",")
