@@ -11,9 +11,15 @@ super <- transform(super,
                    User=factor(User, ordered=F),
                    Track=factor(Track, ordered=F))
 
-require(randomForest)
-super.fix <- na.roughfix(super)
-users.fix <- na.roughfix(users)
+train.words <- merge(train, words, by=c("Artist", "User"), all.x=T)
+test.words <- merge(test, words, by=c("Artist", "User"), all.x=T)
 
-require(party)
-#super.tr <- ctree(Rating ~ ., data=super.fix)
+require(randomForest)
+#super.fix <- na.roughfix(super)
+#users.fix <- na.roughfix(users)
+tw.fix <- na.roughfix(train.words)
+testw.filled <- na.roughfix(test.words)
+
+mdl.lm <- lm(Rating ~ ., data=tw.fix)
+out <- predict(mdl.lm, testw.filled)
+write.csv(as.data.frame(out), file="rflm.csv", row.names=F)
