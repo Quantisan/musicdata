@@ -1,4 +1,4 @@
-#setwd("~/Rcode/hackathonMusic/musicdata/src/R")
+##setwd("~/Rcode/hackathonMusic/musicdata/src/R")
 
 if(!exists("test")) {test <- read.csv("../../data/test.csv")} #125794 * 4
 if(!exists("train")) {train <- read.csv("../../data/train.csv")} #188690 * 5

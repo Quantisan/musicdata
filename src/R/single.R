@@ -9,3 +9,7 @@ super <- transform(super,
                    Artist=factor(Artist, ordered=F),
                    User=factor(User, ordered=F),
                    Track=factor(Track, ordered=F))
+
+require(randomForest)
+super.fix <- na.roughfix(super)
+users.fix <- na.roughfix(users)
