@@ -13,3 +13,6 @@ super <- transform(super,
 require(randomForest)
 super.fix <- na.roughfix(super)
 users.fix <- na.roughfix(users)
+
+require(party)
+super.tr <- ctree(Ratings ~ ., data=super.fix)
